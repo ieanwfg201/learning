@@ -35,6 +35,7 @@ public class MediaConfigEntity {
     @Setter
     public static class MediaConfigInfos {
         private String media;
+        private String loginUrl = "";
         private String username = "";
         private String password = "";
         private String host = "";
@@ -48,13 +49,14 @@ public class MediaConfigEntity {
         private String uploadArticleAsPublishUrl = "";
         private String uploadArticleAsDraftUrl = "";
         private int uploadArticleMaxCount;
+        private Map<String, String> extendMap = new HashMap<>();
 
         public MediaConfigInfos(String media){setMedia(media);}
         public String stringValue(String prefix) {
             if (prefix == null) prefix = "";
             StringBuilder str = new StringBuilder();
             str.append(prefix).append("Media: ").append(media).append(" configuration as follows \n");
-
+            str.append(prefix).append("  |- ").append("loginUrl: ").append(loginUrl).append("\n");
             str.append(prefix).append("  |- ").append("username: ").append(username).append(", password: ")
                     .append(password).append(", cookies: ").append(cookieStr).append("\n");
             str.append(prefix).append("  |- ").append("Useragent: ").append(userAgent).append(", Origin: ")
@@ -64,7 +66,8 @@ public class MediaConfigEntity {
             str.append(prefix).append("     ").append("download.creative.url: ").append(downloadCreativeUrl).append("\n");
             str.append(prefix).append("  |- ").append("upload.creative.url: ").append(uploadCreativeUrl).append("\n");
             str.append(prefix).append("     ").append("upload.article.as.published.url: ").append(uploadArticleAsPublishUrl).append("\n");
-            str.append(prefix).append("     ").append("upload.article.as.draft.url: ").append(uploadArticleAsDraftUrl);
+            str.append(prefix).append("     ").append("upload.article.as.draft.url: ").append(uploadArticleAsDraftUrl).append("\n");
+            str.append(prefix).append("  |- ").append("extend.config: ").append(extendMap);
             return str.toString();
         }
 

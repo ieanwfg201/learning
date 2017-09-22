@@ -1,5 +1,6 @@
 package com.hbhs.tools.media.autosync.media.download;
 
+import com.hbhs.tools.media.autosync.entity.MediaConfigEntity;
 import com.hbhs.tools.media.autosync.media.IArticleDownloader;
 import com.hbhs.tools.media.autosync.media.entity.ArticleInfos;
 import com.hbhs.tools.media.autosync.media.entity.ArticleLoaderCondition;
@@ -24,36 +25,22 @@ public abstract class AbstractArticleDownloader implements IArticleDownloader {
     @Getter
     private String host;
     @Getter@Setter
-    private String loginPage;
-    @Getter@Setter
-    private String articleListPageUrl;
-    @Getter@Setter
-    private String articleDetailPageUrl;
-    @Getter@Setter
-    private String mediaName;
-    @Getter@Setter
-    private String creativeDownloadUrl;
+    MediaConfigEntity.MediaConfigInfos config;
 
     @Getter
     private List<Cookie> cookieList = null;
 
 
-    public AbstractArticleDownloader(String mediaName, String loginPage,
-                                     String articleListPageUrl, String articlePagePrefixUrl,
-                                     String creativeDownloadUrl){
-        setMediaName(mediaName);
-        setLoginPage(loginPage);
-        setArticleListPageUrl(articleListPageUrl);
-        setArticleDetailPageUrl(articlePagePrefixUrl);
-        setCreativeDownloadUrl(creativeDownloadUrl);
+    public AbstractArticleDownloader(MediaConfigEntity.MediaConfigInfos config){
+        setConfig(config);
         setHost();
     }
 
 
     protected void setHost(){
-        String url = getLoginPage();
-        if (StringUtils.isEmpty(url)) url = getArticleListPageUrl() ;
-        if (StringUtils.isEmpty(url)) url = getArticleDetailPageUrl();
+        String url = config.getLoginUrl();
+        if (StringUtils.isEmpty(url)) url = config.getDownloadArticleListUrl() ;
+        if (StringUtils.isEmpty(url)) url = config.getDownloadArticleDetailUrl();
         if (StringUtils.isEmpty(url)) return ;
         url = url.toLowerCase();
         if (url.startsWith(HTTP_HEADER)) url = url.substring(HTTP_HEADER.length());
@@ -96,8 +83,8 @@ public abstract class AbstractArticleDownloader implements IArticleDownloader {
      * @return null
      */
     protected void initRequestCookies(){
-        String address = loginPage;
-        if (StringUtils.isEmpty(address)) address = articleListPageUrl;
+        String address = config.getLoginUrl();
+        if (StringUtils.isEmpty(address)) address = config.getDownloadArticleListUrl();
         this.cookieList = HttpRequestUtils.getCookie(address, null, null);
     }
 
@@ -107,15 +94,15 @@ public abstract class AbstractArticleDownloader implements IArticleDownloader {
         // 1. init
         init();
         // 2. do login if need
-        LOG.debug("STEP-1: Start do login for media: {}", getMediaName());
+        LOG.debug("STEP-1: Start do login for media: {}", config.getMedia());
         if (!login()){
-            LOG.error("Failed to login media: {} inside AbstractArticleDownloader, break next steps", getMediaName());
+            LOG.error("Failed to login media: {} inside AbstractArticleDownloader, break next steps", config.getMedia());
             return null;
         }
-        LOG.debug("Success login into media: {} inside AbstractArticleDownloader, execute next steps", getMediaName());
+        LOG.debug("Success login into media: {} inside AbstractArticleDownloader, execute next steps", config.getMedia());
 
         // 3. get article list
-        LOG.debug("STEP-2: Start request article list from remote url: {}", getArticleListPageUrl());
+        LOG.debug("STEP-2: Start request article list from remote url: {}", config.getDownloadArticleListUrl());
         List<ArticleInfos> articleList = requestAriticleList();
         debugArticalInfos(articleList);
 

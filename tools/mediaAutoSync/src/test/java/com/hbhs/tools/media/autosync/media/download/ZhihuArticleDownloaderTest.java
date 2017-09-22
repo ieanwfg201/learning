@@ -18,7 +18,7 @@ public class ZhihuArticleDownloaderTest {
     String articleListUrl = "https://zhuanlan.zhihu.com/ml123";
     String articleDetailUrl = "https://zhuanlan.zhihu.com";
     String creativeDownloadUrl = "https://pic3.zhimg.com/";
-    IArticleDownloader loader = new ZhihuArticleDownloader(articleListUrl, articleDetailUrl, creativeDownloadUrl);
+    IArticleDownloader loader = new ZhihuArticleDownloader(null);
 
     @Test
     public void testFLow() throws Exception{

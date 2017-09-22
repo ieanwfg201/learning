@@ -20,9 +20,13 @@ import java.util.List;
 
 public class BaiJiaHaoArticleUploader extends AbstractArticleUploader{
     private static final Logger LOG = LoggerFactory.getLogger(BaiJiaHaoArticleUploader.class);
-
+    private static final String CONFIG_KEY_APP_ID = "app_id";
+    private String appID = null;
     public BaiJiaHaoArticleUploader(MediaConfigEntity.MediaConfigInfos mediaConfig) {
         super(mediaConfig);
+        if (mediaConfig.getExtendMap().get(CONFIG_KEY_APP_ID)==null)
+            throw new RuntimeException("No app_id found for baijiahao configuration.");
+        this.appID = mediaConfig.getExtendMap().get(CONFIG_KEY_APP_ID);
     }
 
     @Override

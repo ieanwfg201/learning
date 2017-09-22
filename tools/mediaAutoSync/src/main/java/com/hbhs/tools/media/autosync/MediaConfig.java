@@ -19,6 +19,7 @@ import java.util.Properties;
 public class MediaConfig {
     private static final Logger LOG = LoggerFactory.getLogger(MediaConfig.class);
     private static final String SPLIT_FIELD = ",";
+    private static final String EXTEND_FIELD = ".extend.";
 
     @Bean
     public MediaConfigEntity mediaConfigEntity() {
@@ -60,6 +61,7 @@ public class MediaConfig {
                 MediaConfigEntity.MediaConfigInfos config = mediaConfigInfos(media, props);
                 if (config != null) entity.getMediaMap().put(config.getMedia(), config);
             }
+            setExtendProperties(props, entity);
             LOG.info("Success loading media infos. details is as follow: \n{}", entity.toString());
             return entity;
         } catch (Exception e) {
@@ -88,7 +90,24 @@ public class MediaConfig {
         if (props.get(key)!=null) infos.setUploadArticleAsDraftUrl(props.get(key).toString().trim());
         key = media + ".upload.article.upload.published";
         if (props.get(key)!=null) infos.setUploadArticleAsPublishUrl(props.get(key).toString().trim());
+
         return infos;
+    }
+
+    private void setExtendProperties(Properties props, MediaConfigEntity entity){
+        for (Object o : props.keySet()) {
+            if (o==null||StringUtils.isEmpty(o.toString())) continue;
+            String key = o.toString();
+
+            if (key.contains(EXTEND_FIELD)){
+                int index = key.indexOf(EXTEND_FIELD);
+                String media = key.substring(0, index);
+                String extendKey = key.substring(index+EXTEND_FIELD.length());
+                if (entity.getMediaMap().containsKey(media)){
+                    entity.getMediaMap().get(media).getExtendMap().put(extendKey, props.get(key).toString());
+                }
+            }
+        }
     }
 
 }

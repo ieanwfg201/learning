@@ -3,6 +3,7 @@ package com.hbhs.tools.media.autosync.media.download;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hbhs.tools.media.autosync.ApplicationConfig;
+import com.hbhs.tools.media.autosync.entity.MediaConfigEntity;
 import com.hbhs.tools.media.autosync.media.entity.ArticleInfos;
 import com.hbhs.tools.media.autosync.media.utils.DatePraser;
 import com.hbhs.tools.media.autosync.media.utils.HttpRequestUtils;
@@ -15,13 +16,11 @@ import java.util.*;
 
 public class ZhihuArticleDownloader extends AbstractArticleDownloader {
     private static Logger LOG = LoggerFactory.getLogger(ZhihuArticleDownloader.class);
-    private static final String MEDIA_NAME = "ZHI-HU";
     private String articleStartTag = "<textarea id=\"preloadedState\" hidden>";
     private String articleEndTag = "</textarea>";
     private ObjectMapper mapper = new ObjectMapper();
-    public ZhihuArticleDownloader(String articleListPageUrl, String articlePagePrefixUrl,
-                                  String creativeDownloadUrl) {
-        super(MEDIA_NAME,null,articleListPageUrl,articlePagePrefixUrl,creativeDownloadUrl);
+    public ZhihuArticleDownloader(MediaConfigEntity.MediaConfigInfos config) {
+        super(config);
     }
 
     @Override
@@ -29,8 +28,8 @@ public class ZhihuArticleDownloader extends AbstractArticleDownloader {
 
     @Override
     public List<ArticleInfos> requestAriticleList(){
-        String html = HttpRequestUtils.get(getArticleListPageUrl(), getCookieList(), null, null);
-        LOG.debug("Loading data inside ZhihuArticleDownloader from url: {},  ", getArticleListPageUrl());
+        String html = HttpRequestUtils.get(config.getDownloadArticleListUrl(), getCookieList(), null, null);
+        LOG.debug("Loading data inside ZhihuArticleDownloader from url: {},  ", config.getDownloadArticleListUrl());
 
         // find target content
         if (StringUtils.isEmpty(html)) return null;
@@ -57,7 +56,7 @@ public class ZhihuArticleDownloader extends AbstractArticleDownloader {
                 a.setArticalName(keyValue.getValue().get("title").asText());
                 a.setOriginalMedia("ZhiHu");
                 a.setOriginalMediaID(keyValue.getKey());
-                a.setOriginalArticleUrl(super.getArticleDetailPageUrl()+keyValue.getValue().get("url").asText());
+                a.setOriginalArticleUrl(config.getDownloadArticleDetailUrl()+keyValue.getValue().get("url").asText());
                 a.setUpdateDate(DatePraser.praseDate(keyValue.getValue().get("publishedTime").asText()));
                 // content can get here
                 a.setContent(keyValue.getValue().get("content").asText());
@@ -92,7 +91,7 @@ public class ZhihuArticleDownloader extends AbstractArticleDownloader {
         while(content.contains(imageCreativePrefix)){
             content = content.substring(content.indexOf(imageCreativePrefix));
             String creativeAddressKey = getCreativeAddress(content);
-            String remoteDownloadUrl = getCreativeDownloadUrl()+creativeAddressKey;
+            String remoteDownloadUrl = config.getDownloadCreativeUrl()+creativeAddressKey;
             String localFile = download(remoteDownloadUrl);
             if (localFile!=null){
                 ArticleInfos.CreativeInfos creativeInfos = article.getCreativeMap().get(creativeAddressKey);

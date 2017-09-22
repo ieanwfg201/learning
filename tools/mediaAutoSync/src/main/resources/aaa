@@ -3,3 +3,29 @@ http://timg01.bdimg.com/timg?pacompress&imgtype=1&sec=1439619614&autorotate=1&di
 
 http://timg01.bdimg.com/timg?pacompress&imgtype=3&sec=1439619614&autorotate=1&di=6e6d89872f5330cd64e57aee96cfcef9&quality=90&size=b388_10083&cut_x=0&cut_y=0&cut_w=388&cut_h=260&src=http%3A%2F%2Ftimg01.bdimg.com%2Ftimg%3Fpacompress%26imgtype%3D3%26sec%3D1439619614%26autorotate%3D1%26di%3D44f4756954720f14de852985a50c1d83%26quality%3D90%26size%3Db870_10000%26src%3Dhttp%253A%252F%252Fbos.nj.bpc.baidu.com%252Fv1%252Fmediaspot%252F63a6576830793c6dc91b8536a105865c.png
 http://timg01.bdimg.com/timg?pacompress&imgtype=3&sec=1439619614&autorotate=1&di=44f4756954720f14de852985a50c1d83&quality=90&size=b870_10000                                    &src=http%3A%2F%2Fbos.nj.bpc.baidu.com%2Fv1%2Fmediaspot%2F63a6576830793c6dc91b8536a105865c.png
+
+
+
+1560585747010784
+
+
+
+
+
+
+
+
+BDUSS=UwzbW04Vk9uSnJlWEd6TkJhZmdXc05hdGwxakc4MFVNZVRCaTAtNkF2YzlJQVJaSVFBQUFBJCQAAAAAAAAAAAEAAABCUqJfzt7p5NurAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2T3Fg9k9xYc; __cfduid=de3427cb7dd649479230c7367e00989e71492998873; BAIDUID=75B52795A59DC2B928E70C0B833933ED:FG=1; PSTM=1497239238; BDSFRCVID=ECDsJeC62xuiwj3Zhm2FUOXuHeePonTTH6bH2eeMEYHRKSmBN3cpEG0PqU8g0Kub5Q1ZogKK0eOTHkJP; H_BDCLCKID_SF=tJAfoCPytI-3fP36q4bHK4PthxtjJT_XKKOLVh5n3POkeq8CDR7hMJ-qDn6326jlQmOvLlnH5xJoDxb2y5jDy5D8btc4XxvNWa7L5qubK-JpsIJMKq_WbT8U5fKtQ6ozaKviaKJHBMb1jpcMe4bK-TryjHteJMK; BIDUPSID=E872903423FDF736AA0956493A1CDC9A; BDRCVFR[feWj1Vr5u3D]=I67x6TjHwwYf0; BDRCVFR[dG2JNJb_ajR]=mk3SLVN4HKm; BDRCVFR[tox4WRQ4-Km]=mk3SLVN4HKm; Hm_lvt_192fa266ff34772c28e4ddb36b8f4472=1496726093,1497002669,1497347066,1497347545; Hm_lpvt_192fa266ff34772c28e4ddb36b8f4472=1497403506; PSINO=5; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; H_PS_PSSID=1445_21081_17001_23384; Hm_lvt_f2ee7f5c2284ca4c112e62165bc44c75=1496375303,1496648992,1496713269,1496999053; Hm_lpvt_f2ee7f5c2284ca4c112e62165bc44c75=1497491518; PMS_JT=%28%7B%22s%22%3A1497491640074%2C%22r%22%3A%22http%3A//baijiahao.baidu.com/%22%7D%29
+
+
+cd /var/data/kritter/log_readytoprocess/billing
+cp ./2017-06-13-00/bj1613optbilling-billing-thrift.log.2017-06-12-22-* ./2017-06-12-22/
+cp ./2017-06-13-00/bj1613optbilling-billing-thrift.log.2017-06-12-23-* ./2017-06-12-23/
+
+cd /usr/share/kritter/kumbaya/azkaban_wf/kritter/kritter_hourly/kritter_first_level/
+./manual_run.sh 2017-06-12 21 N
+./manual_run.sh 2017-06-12 22 N
+./manual_run.sh 2017-06-12 23 N
+
+cd ../../kritter_daily/kritter_first_level_daily/
+./manual_run.sh 2017-06-12

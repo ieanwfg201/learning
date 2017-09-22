@@ -14,6 +14,9 @@
         <module>tools/common</module>
         <module>example/common</module>
         <module>tools/mediaAutoSync</module>
+        <module>data/madhousegenerator</module>
+        <module>example/knowledge</module>
+        <module>tools/markdowntohtml</module>
     </modules>
 
     <dependencies>
