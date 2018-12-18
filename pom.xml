@@ -17,6 +17,7 @@
         <module>data/madhousegenerator</module>
         <module>example/knowledge</module>
         <module>tools/markdowntohtml</module>
+        <module>tools/example-short-url</module>
     </modules>
 
     <dependencies>
